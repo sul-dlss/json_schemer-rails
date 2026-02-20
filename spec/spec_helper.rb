@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "json_schemer/rails"
+require "json_schemer/rails/open_api_validator"
+require "json_schemer/rails/validation_error"
+require "active_model"
+require "action_dispatch"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

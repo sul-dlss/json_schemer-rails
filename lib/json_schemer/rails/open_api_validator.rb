@@ -29,9 +29,7 @@ module JsonSchemer
 
       # cast any parameters that are not part of the OpenAPI specification
       def validated_params
-        param_specs = document.ref(request_openapi_path).value["parameters"] || []
-
-        param_specs.each do |spec|
+        parameter_specs.each do |spec|
           case spec["in"]
           when "query"
             validate_query_param(spec)
@@ -42,6 +40,14 @@ module JsonSchemer
       end
 
       private
+
+      # @return [Array<Hash>] An array of parameter specifications from the OpenAPI document.
+      # @raises RequestValidationError if the OpenAPI specification cannot be found.
+      def parameter_specs
+        document.ref(request_openapi_path).value["parameters"] || []
+      rescue JSONSchemer::InvalidRefPointer
+        raise RequestValidationError, "Unable to find OpenAPI specification for #{request_openapi_path}"
+      end
 
       def should_validate_body?
         return false if %w[delete get].include?(request.method.downcase) # no body to verify

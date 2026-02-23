@@ -12,7 +12,7 @@ module JsonSchemer
         openapi_validator.validated_params
 
         errors = openapi_validator.validate_body.to_a
-        raise(ValidationError, errors.pluck("error").join("; ")) if errors.any?
+        raise(RequestValidationError, errors.pluck("error").join("; ")) if errors.any?
       end
 
       private

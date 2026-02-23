@@ -4,6 +4,7 @@ PATH
     json_schemer-rails (0.3.1)
       json_schemer (~> 2.5)
       railties (~> 8.0)
+      zeitwerk
 
 GEM
   remote: https://rubygems.org/

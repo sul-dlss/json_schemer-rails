@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
-RSpec.describe JsonSchemer::Rails::OpenApiValidator do
+RSpec.describe JSONSchemer::Rails::OpenApiValidator do
   subject(:validator) do
     described_class.new(request, open_api_filename:)
   end
@@ -54,7 +52,7 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
         it "raises a RequestValidationError" do
           expect { validator.validate_body }
             .to raise_error(
-              JsonSchemer::Rails::RequestValidationError,
+              JSONSchemer::Rails::RequestValidationError,
               '"Content-Type" request header must be set to "application/json".'
             )
         end
@@ -273,7 +271,7 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
 
         it "raises a RequestValidationError" do
           expect { validator.validated_params }
-            .to raise_error(JsonSchemer::Rails::RequestValidationError)
+            .to raise_error(JSONSchemer::Rails::RequestValidationError)
         end
       end
 
@@ -311,7 +309,7 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
       end
 
       it "completes with an error when method isn't found" do
-        expect { validator.validated_params }.to raise_error JsonSchemer::Rails::RequestValidationError
+        expect { validator.validated_params }.to raise_error JSONSchemer::Rails::RequestValidationError
       end
     end
 

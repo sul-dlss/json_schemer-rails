@@ -1,4 +1,4 @@
-# JsonSchemer::Rails
+# JSONSchemer::Rails
 
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.4.0-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Rails](https://img.shields.io/badge/rails-%3E%3D%208.0-red.svg)](https://rubyonrails.org/)
@@ -90,7 +90,7 @@ paths:
 
 ```ruby
 class UsersController < ApplicationController
-  include JsonSchemer::Rails::Controller
+  include JSONSchemer::Rails::Controller
   
   before_action :validate_from_openapi, only: [:create, :update]
 
@@ -111,7 +111,7 @@ end
 ```ruby
 class UsersController < ApplicationController
   def create
-    validator = JsonSchemer::Rails::OpenApiValidator.new(request)
+    validator = JSONSchemer::Rails::OpenApiValidator.new(request)
     
     # Validate and cast parameters
     validator.validated_params
@@ -134,7 +134,7 @@ end
 By default, the validator looks for `openapi.yml` in your Rails root. You can specify a different location:
 
 ```ruby
-validator = JsonSchemer::Rails::OpenApiValidator.new(
+validator = JSONSchemer::Rails::OpenApiValidator.new(
   request,
   open_api_filename: Rails.root.join('config', 'api_schema.yml')
 )
@@ -199,11 +199,11 @@ params[:limit]  # => "10" (String, not cast because OpenAPI handles this differe
 
 ## Error Handling
 
-When validation fails, a `JsonSchemer::Rails::RequestValidationError` is raised:
+When validation fails, a `JSONSchemer::Rails::RequestValidationError` is raised:
 
 ```ruby
 class ApplicationController < ActionController::API
-  rescue_from JsonSchemer::Rails::RequestValidationError do |exception|
+  rescue_from JSONSchemer::Rails::RequestValidationError do |exception|
     render json: { error: exception.message }, status: :unprocessable_entity
   end
 end
@@ -249,7 +249,7 @@ end
 
 ```ruby
 class UsersController < ApplicationController
-  include JsonSchemer::Rails::Controller
+  include JSONSchemer::Rails::Controller
   
   before_action :validate_from_openapi, except: [:index]
   
@@ -268,7 +268,7 @@ end
 ```ruby
 class UsersController < ApplicationController
   def create
-    validator = JsonSchemer::Rails::OpenApiValidator.new(request)
+    validator = JSONSchemer::Rails::OpenApiValidator.new(request)
     
     # Validate parameters first
     validator.validated_params

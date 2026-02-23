@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "rails/version"
-require_relative "rails/validation_error"
-require_relative "rails/open_api_validator"
-require_relative "rails/controller"
+require "json_schemer"
+require "zeitwerk"
 
-module JsonSchemer
+Zeitwerk::Loader.for_gem_extension(JSONSchemer).setup
+
+module JSONSchemer
   module Rails
     class Error < StandardError; end
     # Your code goes here...

@@ -289,6 +289,17 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
       end
     end
 
+    context "with no spec" do
+      before do
+        allow(request).to receive_messages(method: "HEAD", path: "/users",
+                                           path_parameters: { controller: "users", action: "create" }, query_parameters: {})
+      end
+
+      it "completes with an error when method isn't found" do
+        expect { validator.validated_params }.to raise_error JsonSchemer::Rails::RequestValidationError
+      end
+    end
+
     context "with mixed query and path parameters" do
       let(:query_params) { { "limit" => "10" } }
       let(:params_hash) { { "limit" => "10" } }

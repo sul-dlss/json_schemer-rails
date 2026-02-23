@@ -16,7 +16,7 @@ module JsonSchemer
       attr_reader :request
 
       def validate_body
-        return if %w[delete get].include?(request.method.downcase) # no body to verify
+        return unless should_validate_body?
 
         unless request.content_type == "application/json"
           raise RequestValidationError,
@@ -42,6 +42,19 @@ module JsonSchemer
       end
 
       private
+
+      def should_validate_body?
+        return false if %w[delete get].include?(request.method.downcase) # no body to verify
+
+        begin
+          document.ref("#{request_openapi_path}/requestBody")
+        rescue JSONSchemer::InvalidRefPointer
+          # This schema doesn't specify a request body, so don't validate it
+          return false
+        end
+
+        true
+      end
 
       def document
         @document ||= JSONSchemer.openapi(open_api_struct)

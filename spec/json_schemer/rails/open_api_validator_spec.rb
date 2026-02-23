@@ -38,7 +38,7 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
       end
     end
 
-    context "when the request method is POST" do
+    context "when the request method is POST and the body is validated" do
       let(:body) { StringIO.new(body_json) }
 
       before do
@@ -105,6 +105,18 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
             expect(errors).not_to be_empty
           end
         end
+      end
+    end
+
+    context "when content type is not validated" do
+      before do
+        allow(request).to receive_messages(method: "POST", path: "/workflows",
+                                           path_parameters: { controller: "users", action: "create" })
+      end
+
+      it "validates successfully" do
+        result = validator.validate_body
+        expect(result.to_a).to be_empty
       end
     end
 

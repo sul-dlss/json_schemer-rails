@@ -16,3 +16,5 @@ gem "rubocop-rspec", "~> 3.9"
 
 gem "actionpack"
 gem "activemodel"
+
+gem "debug"

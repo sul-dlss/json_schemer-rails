@@ -33,7 +33,7 @@ paths:
           schema:
             type: string
       responses:
-        '201':
+        "201":
           description: User created
     get:
       summary: List users
@@ -47,7 +47,7 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: List of users
   /users/{id}:
     get:
@@ -57,9 +57,9 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/UserId'
+            $ref: "#/components/schemas/UserId"
       responses:
-        '200':
+        "200":
           description: User details
     put:
       summary: Update a user
@@ -68,7 +68,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/UserId'
+            $ref: "#/components/schemas/UserId"
       requestBody:
         required: true
         content:
@@ -81,7 +81,7 @@ paths:
                 email:
                   type: string
       responses:
-        '200':
+        "200":
           description: User updated
     delete:
       summary: Delete a user
@@ -90,9 +90,9 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/UserId'
+            $ref: "#/components/schemas/UserId"
       responses:
-        '204':
+        "204":
           description: User deleted
   /posts/{object_id}:
     get:
@@ -102,15 +102,30 @@ paths:
           in: path
           required: true
           schema:
-            $ref: '#/components/schemas/ObjectId'
+            $ref: "#/components/schemas/ObjectId"
       responses:
-        '200':
+        "200":
           description: Post details
+  /workflows:
+    post:
+      summary: Create a workflow (no body)
+      parameters:
+        - name: notify
+          in: query
+          schema:
+            type: boolean
+        - name: source
+          in: query
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Workflow created
 components:
   schemas:
     UserId:
       type: string
-      pattern: '^[0-9]+$'
+      pattern: "^[0-9]+$"
     ObjectId:
       type: string
-      pattern: '^[a-zA-Z0-9]+$'
+      pattern: "^[a-zA-Z0-9]+$"

@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["jcoyne@justincoyne.com"]
 
   spec.description = "Rails integration for JsonSchemer. Validates OpenAPI"
+  spec.summary = "Rails integration for JsonSchemer. Validates OpenAPI"
   spec.homepage = "https://github.com/sul-dlss/json_schemer-rails"
   spec.required_ruby_version = ">= 3.4.0"
 

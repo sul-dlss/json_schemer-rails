@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "rails/version"
+require_relative "rails/validation_error"
 require_relative "rails/open_api_validator"
 require_relative "rails/controller"
 

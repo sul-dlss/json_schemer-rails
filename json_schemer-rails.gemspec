@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Justin Coyne"]
   spec.email = ["jcoyne@justincoyne.com"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
+  spec.description = "Rails integration for JsonSchemer. Validates OpenAPI"
   spec.homepage = "https://github.com/sul-dlss/json_schemer-rails"
   spec.required_ruby_version = ">= 3.4.0"
 

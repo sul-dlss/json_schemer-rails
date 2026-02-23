@@ -106,7 +106,7 @@ module JsonSchemer
       def json_ref_for_path
         params = request.path_parameters.except(:controller, :action)
         path = CGI.unescape(request.path).tr(" ", "+")
-        %i[object_id id].each do |parameter|
+        params.excluding("controller", "action", "format").each_key do |parameter|
           path.gsub!(params[parameter], "%7B#{parameter}%7D") if params[parameter]
         end
         path.gsub("/", "~1")

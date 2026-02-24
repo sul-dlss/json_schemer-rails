@@ -102,7 +102,14 @@ module JsonSchemer
       def validate_path_param(spec) # rubocop:disable Metrics/AbcSize
         result = request.path_parameters[spec["name"].to_sym]
         ref = spec.dig("schema", "$ref")
-        errors = document.ref(ref).validate(result).to_a
+        validator = if ref
+                      document.ref(ref)
+                    else
+                      JSONSchemer.schema(spec["schema"])
+                    end
+
+        errors = validator.validate(result).to_a
+
         raise RequestValidationError, errors.join(", ") unless errors.empty?
 
         request.params[spec["name"]] = result

@@ -248,7 +248,7 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
         allow(request).to receive_messages(method: "GET", query_parameters: {})
       end
 
-      context "when path parameter matches schema" do
+      context "when path parameter has $ref and matches schema" do
         let(:path_params) { { controller: "users", action: "show", id: "123" } }
         let(:params_hash) { { "id" => "123" } }
 
@@ -274,6 +274,21 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
         it "raises a RequestValidationError" do
           expect { validator.validated_params }
             .to raise_error(JsonSchemer::Rails::RequestValidationError)
+        end
+      end
+
+      context "when path parameter has simple type and matches schema" do
+        let(:path_params) { { controller: "workflows", action: "show", id: "123" } }
+        let(:params_hash) { { "id" => "123" } }
+
+        before do
+          allow(request).to receive_messages(path: "/workflows/123", path_parameters: path_params)
+          allow(params_hash).to receive(:[]=)
+        end
+
+        it "validates and sets the path parameter" do
+          validator.validated_params
+          expect(params_hash).to have_received(:[]=).with("id", "123")
         end
       end
     end

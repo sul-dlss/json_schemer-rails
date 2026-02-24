@@ -20,6 +20,9 @@ Metrics/BlockLength:
 RSpec/NestedGroups:
   Max: 5
 
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
+
 Gemspec/AddRuntimeDependency: # new in 1.65
   Enabled: true
 Gemspec/AttributeAssignment: # new in 1.77

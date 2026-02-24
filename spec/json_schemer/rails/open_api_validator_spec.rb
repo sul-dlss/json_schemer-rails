@@ -4,10 +4,10 @@ require "spec_helper"
 
 RSpec.describe JsonSchemer::Rails::OpenApiValidator do
   subject(:validator) do
-    described_class.new(request, open_api_filename: openapi_file)
+    described_class.new(request, open_api_filename:)
   end
 
-  let(:openapi_file) { File.expand_path("../../fixtures/openapi.yml", __dir__) }
+  let(:open_api_filename) { File.expand_path("../../fixtures/openapi.yml", __dir__) }
   let(:request) { double("Request", params: params_hash) }
   let(:params_hash) { {} }
 
@@ -373,6 +373,40 @@ RSpec.describe JsonSchemer::Rails::OpenApiValidator do
       it "raises a JSON parse error" do
         expect { validator.validate_body }.to raise_error(JSON::ParserError)
       end
+    end
+  end
+
+  context "with valid JSON body and a ref_resolver" do
+    subject(:validator) do
+      described_class.new(request, open_api_filename:, ref_resolver:)
+    end
+
+    before do
+      allow(request).to receive_messages(method: "POST", path: "/frogs",
+                                         path_parameters: { controller: "users", action: "create" },
+                                         content_type: "application/json", body:)
+    end
+
+    let(:body) { StringIO.new(body_json) }
+
+    let(:ref_resolver) do
+      instance_double(Proc, call: {
+                        "components" => {
+                          "schemas" => {
+                            "frog" => {
+                              "type" => "object",
+                              "properties" => { "name" => { "type" => "string" }, "age" => { "type" => "integer" } }
+                            }
+                          }
+                        }
+                      })
+    end
+
+    let(:body_json) { '{"name":"Kermit","age":63}' }
+
+    it "validates successfully" do
+      result = validator.validate_body
+      expect(result.to_a).to be_empty
     end
   end
 end

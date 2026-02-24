@@ -8,12 +8,13 @@ module JsonSchemer
   module Rails
     # This validates a request against the OpenAPI specification
     class OpenApiValidator
-      def initialize(request, open_api_filename: "openapi.yml")
+      def initialize(request, open_api_filename: "openapi.yml", ref_resolver: nil)
         @request = request
         @open_api_filename = open_api_filename
+        @ref_resolver = ref_resolver
       end
 
-      attr_reader :request
+      attr_reader :request, :ref_resolver
 
       def validate_body
         return unless should_validate_body?
@@ -63,7 +64,11 @@ module JsonSchemer
       end
 
       def document
-        @document ||= JSONSchemer.openapi(open_api_struct)
+        @document ||= JSONSchemer.openapi(open_api_struct, **options)
+      end
+
+      def options
+        { ref_resolver: }.compact
       end
 
       def open_api_struct

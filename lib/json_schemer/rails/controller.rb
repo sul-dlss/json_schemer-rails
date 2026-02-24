@@ -5,7 +5,7 @@ module JsonSchemer
     # Mixin for controllers.
     # usage:
     #   include JsonSchemer::Rails::Controller
-    #   before_actoin :validate_from_openapi
+    #   before_action :validate_from_openapi
     module Controller
       def validate_from_openapi
         # This is going to cast any parameters to their specified types

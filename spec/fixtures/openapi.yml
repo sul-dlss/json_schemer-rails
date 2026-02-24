@@ -3,6 +3,18 @@ info:
   title: Test API
   version: 1.0.0
 paths:
+  /frogs:
+    post:
+      summary: Create a frog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "https://example.com/#/components/schemas/frog"
+      responses:
+        "201":
+          description: Frog created
   /users:
     post:
       summary: Create a user

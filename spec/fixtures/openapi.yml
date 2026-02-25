@@ -133,6 +133,18 @@ paths:
       responses:
         "201":
           description: Workflow created
+  /workflows/{id}:
+    get:
+      summary: Get a workflow
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Workflow details
 components:
   schemas:
     UserId:

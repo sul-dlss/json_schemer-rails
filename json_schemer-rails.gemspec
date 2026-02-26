@@ -4,12 +4,12 @@ require_relative "lib/json_schemer/rails/version"
 
 Gem::Specification.new do |spec|
   spec.name = "json_schemer-rails"
-  spec.version = JsonSchemer::Rails::VERSION
+  spec.version = JSONSchemer::Rails::VERSION
   spec.authors = ["Justin Coyne"]
   spec.email = ["jcoyne@justincoyne.com"]
 
-  spec.description = "Rails integration for JsonSchemer. Validates OpenAPI"
-  spec.summary = "Rails integration for JsonSchemer. Validates OpenAPI"
+  spec.description = "Rails integration for JSONSchemer. Validates OpenAPI"
+  spec.summary = "Rails integration for JSONSchemer. Validates OpenAPI"
   spec.homepage = "https://github.com/sul-dlss/json_schemer-rails"
   spec.required_ruby_version = ">= 3.4.0"
 
@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "json_schemer", "~> 2.5"
   spec.add_dependency "railties", "~> 8.0"
+  spec.add_dependency "zeitwerk"
 end

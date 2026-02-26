@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe JsonSchemer::Rails do
+RSpec.describe JSONSchemer::Rails do
   it "has a version number" do
-    expect(JsonSchemer::Rails::VERSION).not_to be_nil
+    expect(JSONSchemer::Rails::VERSION).not_to be_nil
   end
 end

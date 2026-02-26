@@ -2,9 +2,8 @@
 
 require "cgi"
 require "yaml"
-require "json_schemer"
 
-module JsonSchemer
+module JSONSchemer
   module Rails
     # This validates a request against the OpenAPI specification
     class OpenApiValidator

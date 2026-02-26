@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-module JsonSchemer
+module JSONSchemer
   module Rails
     # Mixin for controllers.
     # usage:
-    #   include JsonSchemer::Rails::Controller
+    #   include JSONSchemer::Rails::Controller
     #   before_action :validate_from_openapi
     module Controller
       def validate_from_openapi

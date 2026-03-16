@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe JSONSchemer::Rails::OpenApiValidator do
-  subject(:validator) do
-    described_class.new(request, open_api_filename:)
-  end
+  subject(:validator) { described_class.new(request, open_api_filename:) }
 
   let(:open_api_filename) { File.expand_path("../../fixtures/openapi.yml", __dir__) }
   let(:request) { double("Request", params: params_hash) }
@@ -40,7 +38,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       let(:body) { StringIO.new(body_json) }
 
       before do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" })
       end
 
@@ -108,7 +106,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
 
     context "when content type is not validated" do
       before do
-        allow(request).to receive_messages(method: "POST", path: "/workflows",
+        allow(request).to receive_messages(method: "POST", path: "/v1/workflows",
                                            path_parameters: { controller: "users", action: "create" })
       end
 
@@ -123,7 +121,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       let(:body) { StringIO.new(body_json) }
 
       before do
-        allow(request).to receive_messages(method: "PUT", path: "/users/123",
+        allow(request).to receive_messages(method: "PUT", path: "/v1/users/123",
                                            path_parameters: { controller: "users", action: "update", id: "123" }, content_type: "application/json", body: body)
       end
 
@@ -137,7 +135,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
   describe "#validated_params" do
     context "with query parameters" do
       before do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" })
       end
 
@@ -251,13 +249,13 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
         let(:params_hash) { { "id" => "123" } }
 
         before do
-          allow(request).to receive_messages(path: "/users/123", path_parameters: path_params)
+          allow(request).to receive_messages(path: "/v1/users/123", path_parameters: path_params)
           allow(params_hash).to receive(:[]=)
         end
 
         it "validates and sets the path parameter" do
           validator.validated_params
-          expect(params_hash).to have_received(:[]=).with("id", "123")
+          expect(params_hash).to have_received(:[]=).with("id", 123)
         end
       end
 
@@ -266,7 +264,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
         let(:params_hash) { { "id" => "abc" } }
 
         before do
-          allow(request).to receive_messages(path: "/users/abc", path_parameters: path_params)
+          allow(request).to receive_messages(path: "/v1/users/abc", path_parameters: path_params)
         end
 
         it "raises a RequestValidationError" do
@@ -280,20 +278,20 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
         let(:params_hash) { { "id" => "123" } }
 
         before do
-          allow(request).to receive_messages(path: "/workflows/123", path_parameters: path_params)
+          allow(request).to receive_messages(path: "/v1/workflows/123", path_parameters: path_params)
           allow(params_hash).to receive(:[]=)
         end
 
         it "validates and sets the path parameter" do
           validator.validated_params
-          expect(params_hash).to have_received(:[]=).with("id", "123")
+          expect(params_hash).to have_received(:[]=).with("id", 123)
         end
       end
     end
 
     context "with no parameters in the spec" do
       before do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" }, query_parameters: {})
       end
 
@@ -304,7 +302,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
 
     context "with no spec" do
       before do
-        allow(request).to receive_messages(method: "HEAD", path: "/users",
+        allow(request).to receive_messages(method: "HEAD", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" }, query_parameters: {})
       end
 
@@ -318,7 +316,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       let(:params_hash) { { "limit" => "10" } }
 
       before do
-        allow(request).to receive_messages(method: "GET", path: "/users",
+        allow(request).to receive_messages(method: "GET", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "index" }, query_parameters: query_params)
         allow(params_hash).to receive(:[]=)
       end
@@ -335,7 +333,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
     let(:params_hash) { { "notify" => "true" } }
 
     before do
-      allow(request).to receive_messages(method: "POST", path: "/users",
+      allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                          path_parameters: { controller: "users", action: "create" }, content_type: "application/json", body: body, query_parameters: params_hash)
       allow(params_hash).to receive(:[]=)
     end
@@ -356,7 +354,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       end
 
       it "raises an error when trying to load the schema" do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" }, content_type: "application/json")
         expect { invalid_validator.validate_body }.to raise_error(Errno::ENOENT)
       end
@@ -366,7 +364,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       let(:body) { StringIO.new("") }
 
       before do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" }, content_type: "application/json", body: body)
       end
 
@@ -379,7 +377,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
       let(:body) { StringIO.new("{invalid json}") }
 
       before do
-        allow(request).to receive_messages(method: "POST", path: "/users",
+        allow(request).to receive_messages(method: "POST", path: "/v1/users",
                                            path_parameters: { controller: "users", action: "create" }, content_type: "application/json", body: body)
       end
 
@@ -395,7 +393,7 @@ RSpec.describe JSONSchemer::Rails::OpenApiValidator do
     end
 
     before do
-      allow(request).to receive_messages(method: "POST", path: "/frogs",
+      allow(request).to receive_messages(method: "POST", path: "/v1/frogs",
                                          path_parameters: { controller: "users", action: "create" },
                                          content_type: "application/json", body:)
     end

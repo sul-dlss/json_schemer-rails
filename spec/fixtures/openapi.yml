@@ -3,7 +3,7 @@ info:
   title: Test API
   version: 1.0.0
 paths:
-  /frogs:
+  /v1/frogs:
     post:
       summary: Create a frog
       requestBody:
@@ -15,7 +15,7 @@ paths:
       responses:
         "201":
           description: Frog created
-  /users:
+  /v1/users:
     post:
       summary: Create a user
       requestBody:
@@ -61,7 +61,7 @@ paths:
       responses:
         "200":
           description: List of users
-  /users/{id}:
+  /v1/users/{id}:
     get:
       summary: Get a user
       parameters:
@@ -106,7 +106,7 @@ paths:
       responses:
         "204":
           description: User deleted
-  /posts/{object_id}:
+  /v1/posts/{object_id}:
     get:
       summary: Get a post
       parameters:
@@ -118,7 +118,7 @@ paths:
       responses:
         "200":
           description: Post details
-  /workflows:
+  /v1/workflows:
     post:
       summary: Create a workflow (no body)
       parameters:
@@ -133,7 +133,7 @@ paths:
       responses:
         "201":
           description: Workflow created
-  /workflows/{id}:
+  /v1/workflows/{id}:
     get:
       summary: Get a workflow
       parameters:
@@ -141,15 +141,14 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         "200":
           description: Workflow details
 components:
   schemas:
     UserId:
-      type: string
-      pattern: "^[0-9]+$"
+      type: integer
     ObjectId:
       type: string
       pattern: "^[a-zA-Z0-9]+$"

@@ -98,7 +98,7 @@ module JSONSchemer
                                          end
       end
 
-      def validate_path_param(spec) # rubocop:disable Metrics/AbcSize
+      def validate_path_param(spec) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         result = request.path_parameters[spec["name"].to_sym]
         ref = spec.dig("schema", "$ref")
         validator = if ref
@@ -106,6 +106,12 @@ module JSONSchemer
                     else
                       JSONSchemer.schema(spec["schema"])
                     end
+
+        begin
+          result = Integer(result) if validator.fetch("type").value == "integer"
+        rescue ArgumentError
+          raise RequestValidationError, "#{result} is not an integer"
+        end
 
         errors = validator.validate(result).to_a
 
@@ -121,10 +127,12 @@ module JSONSchemer
       end
 
       def json_ref_for_path
-        params = request.path_parameters.except(:controller, :action)
+        params = request.path_parameters.except(:controller, :action, :format)
         path = CGI.unescape(request.path).tr(" ", "+")
-        params.excluding(:controller, :action, :format).each_key do |parameter|
-          path.gsub!(params[parameter], "%7B#{parameter}%7D") if params[parameter]
+        params.each_key do |parameter|
+          next unless path.match?(%r{/#{Regexp.escape(params[parameter])}(/|$)})
+
+          path.sub!("/#{params[parameter]}", "/%7B#{parameter}%7D")
         end
         path.gsub("/", "~1")
       end

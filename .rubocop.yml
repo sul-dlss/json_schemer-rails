@@ -2,10 +2,15 @@ plugins:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 4.0
   SuggestExtensions: false
   Exclude:
     - "vendor/**/*"
+
+# Development uses Ruby 4, but the gem still supports Ruby 3.4 consumers.
+Gemspec/RequiredRubyVersion:
+  Exclude:
+    - json_schemer-rails.gemspec
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
